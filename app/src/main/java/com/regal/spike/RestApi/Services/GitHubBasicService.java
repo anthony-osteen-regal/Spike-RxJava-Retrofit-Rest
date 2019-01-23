@@ -1,6 +1,9 @@
-package com.regal.spike.RestApi;
+package com.regal.spike.RestApi.Services;
 
-import java.io.IOError;
+import com.regal.spike.RestApi.Models.Contributor;
+import com.regal.spike.RestApi.Apis.GitHubBasicApi;
+import com.regal.spike.RestApi.Models.Repository;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -8,15 +11,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rx.Observable;
 
 public class GitHubBasicService {
 
     private GitHubBasicApi gitHubApi;
 
-    GitHubBasicService() {
+    public GitHubBasicService() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.github.com/")
                 .addConverterFactory( GsonConverterFactory.create())
@@ -25,7 +26,7 @@ public class GitHubBasicService {
         gitHubApi = retrofit.create(GitHubBasicApi.class);
     }
 
-    List<String> getTopContributors(String userName) throws IOException {
+    public List<String> getTopContributors(String userName) throws IOException {
         List<Repository> repos = gitHubApi
                 .listRepos(userName)
                 .execute()

@@ -1,10 +1,13 @@
-package com.regal.spike.RestApi;
+package com.regal.spike.RestApi.Apis;
+
+import com.regal.spike.RestApi.Models.Contributor;
+import com.regal.spike.RestApi.Models.Repository;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
-import rx.Observable;
 
 public interface GitHubRxApi {
     @GET("users/{user}/repos")

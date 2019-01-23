@@ -1,4 +1,7 @@
-package com.regal.spike.RestApi;
+package com.regal.spike.RestApi.Apis;
+
+import com.regal.spike.RestApi.Models.Contributor;
+import com.regal.spike.RestApi.Models.Repository;
 
 import java.util.List;
 
