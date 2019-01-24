@@ -21,6 +21,7 @@ public class GitHubRxService {
                 .addInterceptor(interceptor)
                 .build();
 
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.github.com/")
                 .addConverterFactory( GsonConverterFactory.create())
