@@ -5,9 +5,10 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class Contributor {
-    @SerializedName("Login")
+    @SerializedName("login")
     private String name;
 
+    @SerializedName("contributions")
     private Integer contributions;
 
     public String getName() {
@@ -28,6 +29,6 @@ public class Contributor {
 
     @Override
     public String toString(){
-        return "Contributer [name=" + name + ", contributions=" + contributions + "]";
+        return "Contributer\n\tname:\t" + name + "\n\tcontributions:\t" + contributions;
     }
 }

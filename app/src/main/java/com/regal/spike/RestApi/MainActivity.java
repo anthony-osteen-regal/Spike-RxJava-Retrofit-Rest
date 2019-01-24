@@ -57,10 +57,12 @@ public class MainActivity extends AppCompatActivity {
         GitHubRxService service = new GitHubRxService();
 
         String user = userName.getText().toString();
+        clearLog();
         service.getRepos(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::appendToLog, this::onError);
+        //prependLog("Showing all repositories for " + user +".\n\n");
     }
 
     @SuppressLint("CheckResult")
@@ -69,18 +71,31 @@ public class MainActivity extends AppCompatActivity {
 
         String user = userName.getText().toString();
         String repo = repoName.getText().toString();
-
+        clearLog();
         service.getContributors(user, repo)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::appendToLog, this::onError);
+
+        //prependLog("Showing all contributors for " + user + "'s repository, " + repo +".\n\n");
+
     }
 
     private void onError(Throwable e){
         e.printStackTrace();
         appendToLog(e.getMessage() +"\nCheck LogCat\n\n");
     }
-    
+
+    private void clearLog(){
+        log.setText("");
+    }
+
+    private void prependLog(final String message){
+        String contents = log.getText().toString();
+        String newLog = contents + '\n' + message;
+
+        log.setText(newLog);
+    }
     private void appendToLog(final String message){
         String contents = log.getText().toString();
         String newLog = message + '\n' + contents;

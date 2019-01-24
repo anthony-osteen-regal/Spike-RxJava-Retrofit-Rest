@@ -49,7 +49,7 @@ public class GitHubRxService {
     public Observable<String> getContributors(String userName, String repoName){
         return gitHubRxApi.listRepoContributors(userName, repoName)
                 .flatMapIterable(x->x)
-                .map(Contributor::getName)
+                .map(Contributor::toString)
                 .distinct();
     }
 
@@ -60,7 +60,7 @@ public class GitHubRxService {
     public Observable<String> getRepos(String userName) {
         return gitHubRxApi.listRepos(userName)
                 .flatMapIterable(x -> x)
-                .map(Repository::getName)
+                .map(Repository::toString)
                 .distinct();
     }
 }

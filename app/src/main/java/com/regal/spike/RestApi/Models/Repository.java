@@ -22,6 +22,6 @@ public class Repository {
 
     @Override
     public String toString() {
-        return "Repository [name=" + name + ", description=" + description + "]";
+        return "Repository\n\tname=" + name + "\n\tdescription=" + description;
     }
 }
