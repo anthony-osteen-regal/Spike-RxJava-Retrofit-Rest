@@ -58,11 +58,11 @@ public class MainActivity extends AppCompatActivity {
 
         String user = userName.getText().toString();
         clearLog();
+        appendLog("Showing all repositories for " + user +".\n\n");
         service.getRepos(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::appendToLog, this::onError);
-        //prependLog("Showing all repositories for " + user +".\n\n");
+                .subscribe(this::appendLog, this::onError);
     }
 
     @SuppressLint("CheckResult")
@@ -72,40 +72,39 @@ public class MainActivity extends AppCompatActivity {
         String user = userName.getText().toString();
         String repo = repoName.getText().toString();
         clearLog();
+        appendLog("Showing all contributors for " + user + "'s repository, " + repo +".\n\n");
         service.getContributors(user, repo)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::appendToLog, this::onError);
-
-        //prependLog("Showing all contributors for " + user + "'s repository, " + repo +".\n\n");
-
+                .subscribe(this::appendLog, this::onError);
     }
 
     private void onError(Throwable e){
         e.printStackTrace();
-        appendToLog(e.getMessage() +"\nCheck LogCat\n\n");
+        prependLog(e.getMessage() +"\nCheck LogCat\n\n");
     }
 
     private void clearLog(){
         log.setText("");
     }
 
-    private void prependLog(final String message){
+    private void appendLog(final String message){
         String contents = log.getText().toString();
         String newLog = contents + '\n' + message;
 
         log.setText(newLog);
     }
-    private void appendToLog(final String message){
+    
+    private void prependLog(final String message){
         String contents = log.getText().toString();
         String newLog = message + '\n' + contents;
 
         log.setText(newLog);
     }
 
-    private void appendToLog(final List<String> messages){
+    private void prependLog(final List<String> messages){
         for(String msg : messages){
-            appendToLog(msg);
+            prependLog(msg);
         }
     }
 }
