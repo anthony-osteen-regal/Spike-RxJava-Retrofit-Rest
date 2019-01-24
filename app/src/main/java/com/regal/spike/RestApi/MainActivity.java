@@ -1,9 +1,11 @@
 package com.regal.spike.RestApi;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.regal.spike.RestApi.Services.GitHubRxService;
@@ -17,7 +19,12 @@ import io.reactivex.schedulers.Schedulers;
 public class MainActivity extends AppCompatActivity {
 
     TextView log;
-    Button call;
+    Button repos;
+    Button contributors;
+
+    EditText userName;
+    EditText repoName;
+
     int increment;
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -31,34 +38,49 @@ public class MainActivity extends AppCompatActivity {
     private void bind(){
         log = findViewById(R.id.textViewScrolling);
         log.setMovementMethod(new ScrollingMovementMethod());
-        call = findViewById(R.id.buttonCall);
 
-        call.setOnClickListener(v -> listRepos());
+        repos = findViewById(R.id.buttonGetRepos);
+        repos.setOnClickListener(v -> listRepos());
+
+        contributors = findViewById(R.id.buttonGetContributors);
+        contributors.setOnClickListener(v -> getContributors());
+
+        userName = findViewById(R.id.editTextUser);
+        repoName = findViewById(R.id.editTextRepo);
     }
 
     /**
      * This is just test app stuff.
      */
+    @SuppressLint("CheckResult")
     public void listRepos(){
         GitHubRxService service = new GitHubRxService();
 
-        //Yay it works!!
-//        service.getRepos("anthonyPse")
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(this::appendToLog, this::onError);
-
-        service.getTopContributors("eugenp")
+        String user = userName.getText().toString();
+        service.getRepos(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::appendToLog, this::onError);
+    }
 
+    @SuppressLint("CheckResult")
+    public void getContributors(){
+        GitHubRxService service = new GitHubRxService();
+
+        String user = userName.getText().toString();
+        String repo = repoName.getText().toString();
+
+        service.getContributors(user, repo)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::appendToLog, this::onError);
     }
 
     private void onError(Throwable e){
         e.printStackTrace();
         appendToLog(e.getMessage() +"\nCheck LogCat\n\n");
     }
+    
     private void appendToLog(final String message){
         String contents = log.getText().toString();
         String newLog = message + '\n' + contents;

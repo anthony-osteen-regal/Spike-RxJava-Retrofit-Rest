@@ -41,13 +41,26 @@ public class GitHubRxService {
                 .distinct();
     }
 
+    /**
+     * @param userName the owner of the repository
+     * @param repoName the name of the repository
+     * @return the names of all the contributors for a given repo
+     */
+    public Observable<String> getContributors(String userName, String repoName){
+        return gitHubRxApi.listRepoContributors(userName, repoName)
+                .flatMapIterable(x->x)
+                .map(Contributor::getName)
+                .distinct();
+    }
 
-
-    //Don't trust this
+    /**
+     * @param userName The username who's repository list we're querying
+     * @return the names of all the repos created by the provided user
+     */
     public Observable<String> getRepos(String userName) {
         return gitHubRxApi.listRepos(userName)
                 .flatMapIterable(x -> x)
-                .map(Repository::toString)
+                .map(Repository::getName)
                 .distinct();
     }
 }
