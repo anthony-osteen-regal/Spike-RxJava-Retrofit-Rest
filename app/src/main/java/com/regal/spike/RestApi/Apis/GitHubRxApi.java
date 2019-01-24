@@ -13,7 +13,7 @@ public interface GitHubRxApi {
     @GET("users/{user}/repos")
     Observable<List<Repository>> listRepos(@Path("user") String user);
 
-    @GET("repost/{user}/{repo}/contributors")
+    @GET("repos/{user}/{repo}/contributors")
     Observable<List<Contributor>> listRepoContributors(
             @Path("user") String user,
             @Path("repo") String repo

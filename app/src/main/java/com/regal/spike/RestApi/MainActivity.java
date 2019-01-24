@@ -6,10 +6,8 @@ import android.text.method.ScrollingMovementMethod;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.regal.spike.RestApi.Services.GitHubBasicService;
 import com.regal.spike.RestApi.Services.GitHubRxService;
 
-import java.io.IOException;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -43,18 +41,18 @@ public class MainActivity extends AppCompatActivity {
      */
     public void listRepos(){
         GitHubRxService service = new GitHubRxService();
-        service.getTopContributors("anthonyPSE")
+
+        //Yay it works!!
+//        service.getRepos("anthonyPse")
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(this::appendToLog, this::onError);
+
+        service.getTopContributors("eugenp")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(System.out::println, error -> onError(error));
+                .subscribe(this::appendToLog, this::onError);
 
-//        try {
-//            List<String> topContributors = new GitHubBasicService().getTopContributors("anthonyPSE");
-//            topContributors.forEach(System.out::println);
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
     private void onError(Throwable e){
