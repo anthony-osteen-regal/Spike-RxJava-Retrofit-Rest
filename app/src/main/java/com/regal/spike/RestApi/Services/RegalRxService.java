@@ -15,9 +15,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class RegalRxService {
 
-
     private RegalRxApi regalRxApi;
-    private static final String PRIMARY_KEY = "4e5c3af6819d497382ee2c4fb185747d";
+    private static final String PRIMARY_KEY = "a3434522436a4e07a795a49a10184cf7";
     private static final String SECONDARY_KEY = "7e554032ee894feca5d116e4bf3ab7f9";
     private static final String AUTH_USER = "MobileApp1810i_520F5FD5E0B440C697E9EF035C1FFCB5";
 
@@ -40,6 +39,12 @@ public class RegalRxService {
 
     public Observable<String> echo(String echoString ){
         return regalRxApi.getFoo(AUTH_USER, PRIMARY_KEY, echoString)
+                .map(EchoResponse::getEchoString)
+                .distinct();
+    }
+
+    public Observable<String> logIn(String userName, String password ){
+        return regalRxApi.logIn(AUTH_USER, PRIMARY_KEY, userName, password)
                 .map(EchoResponse::getEchoString)
                 .distinct();
     }

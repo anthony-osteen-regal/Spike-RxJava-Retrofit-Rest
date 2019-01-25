@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         echoMessage = findViewById(R.id.editTextEcho);
 
         echo = findViewById(R.id.buttonEcho);
-        echo.setOnClickListener( v -> getEcho());
+        echo.setOnClickListener( v -> getSessionToken());
     }
 
     /**
@@ -94,6 +94,20 @@ public class MainActivity extends AppCompatActivity {
         clearLog();
         appendLog("Echo Response:\n\n");
         service.echo(user)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::appendLog, this::onError);
+    }
+
+    @SuppressLint("CheckResult")
+    public void getSessionToken(){
+        RegalRxService service = new RegalRxService();
+
+        String user = userName.getText().toString();
+        String password = repoName.getText().toString();
+        clearLog();
+        appendLog("UserLogin:\n\n");
+        service.logIn(user, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::appendLog, this::onError);
