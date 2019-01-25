@@ -22,9 +22,11 @@ public class MainActivity extends AppCompatActivity {
     TextView log;
     Button repos;
     Button contributors;
+    Button echo;
 
     EditText userName;
     EditText repoName;
+    EditText echoMessage;
 
     int increment;
     @Override
@@ -42,12 +44,16 @@ public class MainActivity extends AppCompatActivity {
 
         repos = findViewById(R.id.buttonGetRepos);
         repos.setOnClickListener(v -> listRepos());
+        repoName = findViewById(R.id.editTextRepo);
 
         contributors = findViewById(R.id.buttonGetContributors);
         contributors.setOnClickListener(v -> getContributors());
-
         userName = findViewById(R.id.editTextUser);
-        repoName = findViewById(R.id.editTextRepo);
+
+        echoMessage = findViewById(R.id.editTextEcho);
+
+        echo = findViewById(R.id.buttonEcho);
+        echo.setOnClickListener( v -> getEcho());
     }
 
     /**
@@ -84,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
     public void getEcho(){
         RegalRxService service = new RegalRxService();
 
-        String user = userName.getText().toString();
+        String user = echoMessage.getText().toString();
         clearLog();
         appendLog("Echo Response:\n\n");
         service.echo(user)
