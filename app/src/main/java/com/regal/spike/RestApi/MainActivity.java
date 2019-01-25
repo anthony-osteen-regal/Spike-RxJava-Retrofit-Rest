@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         repos.setOnClickListener(v -> listRepos());
 
         contributors = findViewById(R.id.buttonGetContributors);
-        contributors.setOnClickListener(v -> getEcho());
+        contributors.setOnClickListener(v -> getContributors());
 
         userName = findViewById(R.id.editTextUser);
         repoName = findViewById(R.id.editTextRepo);
