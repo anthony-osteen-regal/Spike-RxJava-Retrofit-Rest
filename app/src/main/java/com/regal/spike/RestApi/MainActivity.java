@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.regal.spike.RestApi.Services.GitHubRxService;
+import com.regal.spike.RestApi.Services.RegalRxService;
 
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         repos.setOnClickListener(v -> listRepos());
 
         contributors = findViewById(R.id.buttonGetContributors);
-        contributors.setOnClickListener(v -> getContributors());
+        contributors.setOnClickListener(v -> getEcho());
 
         userName = findViewById(R.id.editTextUser);
         repoName = findViewById(R.id.editTextRepo);
@@ -74,6 +75,19 @@ public class MainActivity extends AppCompatActivity {
         clearLog();
         appendLog("Showing all contributors for " + user + "'s repository, " + repo +".\n\n");
         service.getContributors(user, repo)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::appendLog, this::onError);
+    }
+
+    @SuppressLint("CheckResult")
+    public void getEcho(){
+        RegalRxService service = new RegalRxService();
+
+        String user = userName.getText().toString();
+        clearLog();
+        appendLog("Echo Response:\n\n");
+        service.echo(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::appendLog, this::onError);
