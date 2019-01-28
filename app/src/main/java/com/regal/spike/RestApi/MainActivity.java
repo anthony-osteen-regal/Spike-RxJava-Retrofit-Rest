@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.regal.spike.RestApi.Models.ShowTimeResponse;
 import com.regal.spike.RestApi.Services.GitHubRxService;
 import com.regal.spike.RestApi.Services.RegalRxService;
 
@@ -37,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         increment = 0;
         bind();
     }
-
     private void bind(){
         log = findViewById(R.id.textViewScrolling);
         log.setMovementMethod(new ScrollingMovementMethod());
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         echoMessage = findViewById(R.id.editTextEcho);
 
         echo = findViewById(R.id.buttonEcho);
-        echo.setOnClickListener( v -> getSessionToken());
+        echo.setOnClickListener( v -> getShowtimes());
     }
 
     /**
@@ -109,6 +109,19 @@ public class MainActivity extends AppCompatActivity {
         appendLog("UserLogin:\n\n");
         service.logIn(user, password)
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::appendLog, this::onError);
+    }
+
+    @SuppressLint("CheckResult")
+    public void getShowtimes(){
+        RegalRxService service = new RegalRxService();
+
+        clearLog();
+        appendLog("UserLogin:\n\n");
+        service.showtimes("0682", "2019.01.28")
+                .subscribeOn(Schedulers.io())
+                .map(ShowTimeResponse::toString)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::appendLog, this::onError);
     }

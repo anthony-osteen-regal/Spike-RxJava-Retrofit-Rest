@@ -2,6 +2,7 @@ package com.regal.spike.RestApi.Services;
 
 import com.regal.spike.RestApi.Apis.RegalRxApi;
 import com.regal.spike.RestApi.Models.EchoResponse;
+import com.regal.spike.RestApi.Models.ShowTimeResponse;
 
 import io.reactivex.Observable;
 import okhttp3.OkHttpClient;
@@ -26,8 +27,6 @@ public class RegalRxService {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
                 .build();
-
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.regmovies.com/v1/")
                 .addConverterFactory( GsonConverterFactory.create())
@@ -47,5 +46,10 @@ public class RegalRxService {
         return regalRxApi.logIn(AUTH_USER, PRIMARY_KEY, userName, password)
                 .map(EchoResponse::getEchoString)
                 .distinct();
+    }
+
+    public Observable<ShowTimeResponse> showtimes(String theaterCode, String date){
+        return regalRxApi.showtimes(AUTH_USER, PRIMARY_KEY, theaterCode, date)
+                .flatMapIterable(x->x);
     }
 }
